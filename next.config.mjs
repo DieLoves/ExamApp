@@ -3,8 +3,7 @@ const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION || 'tech';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	output: 'export', // Outputs a Single-Page Application (SPA).
-	distDir:
-		APP_VERSION == 'universal' ? './dist/universal' : `./dist/${APP_VERSION}`, // Changes the build output directory to `./dist/`.
+	distDir: APP_VERSION == 'universal' ? './dist' : `./dist/${APP_VERSION}`, // Changes the build output directory to `./dist/`.
 };
 
 export default nextConfig;
