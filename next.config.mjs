@@ -1,4 +1,4 @@
-const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION || 'tech';
+const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION || 'universal';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
