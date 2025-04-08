@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { APP_NAME } from '@/config';
 import { loadExamSettings, saveExamSettings } from '@/lib/tauri-store';
 import { cn } from '@/lib/utils';
+import { Analytics } from '@vercel/analytics/next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -179,6 +180,7 @@ export default function ExamSetting() {
 					</div>
 				</form>
 			</div>
+			<Analytics />
 		</AppLayout>
 	);
 }

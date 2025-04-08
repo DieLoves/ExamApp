@@ -12,6 +12,7 @@ import { ReviewAnswer } from '@/components/review-answer';
 import { Timer } from '@/components/timer';
 import { Button } from '@/components/ui/button';
 import { useExam } from '@/hooks/use-exam';
+import { Analytics } from '@vercel/analytics/next';
 import { User } from 'lucide-react';
 
 export default function ExamPage() {
@@ -102,6 +103,7 @@ export default function ExamPage() {
 						))}
 					</div>
 				</div>
+				<Analytics />
 			</AppLayout>
 		);
 	}
@@ -224,6 +226,7 @@ export default function ExamPage() {
 					))}
 				</div>
 			</div>
+			<Analytics />
 		</AppLayout>
 	);
 }
