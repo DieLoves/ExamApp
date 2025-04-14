@@ -12,6 +12,7 @@ export interface ExamSettings {
 	studentName: string;
 	tasksCount: number;
 	timeTaken: number;
+	selectedModules: number[]; // Добавляем массив ID выбранных модулей
 }
 
 // Update the ExamResult interface to include terminationReason
@@ -330,7 +331,7 @@ export async function isMobileDevice(): Promise<boolean> {
 	try {
 		if (isTauri()) {
 			const { platform } = await import('@tauri-apps/plugin-os');
-			const platformType = await platform();
+			const platformType = platform();
 			// Tauri 2.0 platform returns "android" or "ios" for mobile
 			return platformType === 'android' || platformType === 'ios';
 		}

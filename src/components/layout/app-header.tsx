@@ -45,7 +45,7 @@ export function AppHeader({
 				<h1 className='text-xl font-semibold'>
 					{title || 'Exam App'}{' '}
 					{showVersion && (
-						<span className='text-gray-400 text-base font-normal'>
+						<span className='text-sm text-muted-foreground font-normal'>
 							{APP_NAME}
 						</span>
 					)}
@@ -53,7 +53,7 @@ export function AppHeader({
 			</div>
 			<div className='flex items-center gap-2'>
 				{showVersion && (
-					<span className='text-sm text-gray-400 mr-2'>
+					<span className='text-sm text-muted-foreground mr-2'>
 						v.{APP_CODE_VERSION}
 					</span>
 				)}

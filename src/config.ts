@@ -36,7 +36,7 @@ export const APP_VERSION = getAppVersion();
 export const APP_NAME =
 	APP_VERSION === 'tech' ? 'Техник версия' : 'Гуманитарная версия';
 export const DATA_FILE = APP_VERSION === 'tech' ? '/tech.json' : '/human.json';
-export const APP_CODE_VERSION = '1.0.0';
+export const APP_CODE_VERSION = '1.5.0 (с прошедшим 1 апреля! шуток не будет)';
 
 // Export the function to check if we're running in a browser
 export function isWebVersion(): boolean {

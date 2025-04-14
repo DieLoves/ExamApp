@@ -62,10 +62,32 @@ export function useExam() {
 			// Загружаем вопросы из выбранного файла
 			const questionsData = await fetch(DATA_FILE).then(res => res.json());
 
+			// Фильтруем вопросы по выбранным модулям
+			let filteredQuestions = questionsData.questions;
+
+			// Если есть выбранные модули, фильтруем вопросы
+			if (
+				savedSettings.selectedModules &&
+				savedSettings.selectedModules.length > 0
+			) {
+				filteredQuestions = questionsData.questions.filter(
+					(q: IExamFileQuestions) =>
+						savedSettings.selectedModules.includes(q.moduleId)
+				);
+			}
+
+			// Если после фильтрации не осталось вопросов, используем все вопросы
+			if (filteredQuestions.length === 0) {
+				filteredQuestions = questionsData.questions;
+			}
+
 			// Загружаем и перемешиваем вопросы на основе настроек
-			const questionCount = savedSettings.tasksCount || 30;
+			const questionCount = Math.min(
+				savedSettings.tasksCount || 30,
+				filteredQuestions.length
+			);
 			const originalQuestions = shuffle<IExamFileQuestions>(
-				questionsData.questions
+				filteredQuestions
 			).slice(0, questionCount);
 
 			// Перемешиваем ответы и отслеживаем оригинальные индексы
@@ -444,7 +466,7 @@ export function useExam() {
 		// Настраиваем API видимости браузера
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		// Настраиваем специфичные для Tauri слушат��ли
+		// Настраиваем специфичные для Tauri слушатели
 		const cleanupPromise = setupTauriListeners();
 
 		return () => {

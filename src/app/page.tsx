@@ -61,7 +61,7 @@ export default function Home() {
 					/>
 				)}
 
-				<p className='text-gray-400 mt-4'>
+				<p className='text-sm text-muted-foreground mt-4'>
 					Обновления приложения (Версия на IOS):{' '}
 					<ExternalLink
 						href='https://t.me/+Att5GS3hnLsyMjJi'

@@ -4,14 +4,15 @@ import type React from 'react';
 
 import { AppFooter } from '@/components/layout/app-footer';
 import { AppLayout } from '@/components/layout/app-layout';
+import { ModuleSelector } from '@/components/module-selector';
 import { SliderDemo } from '@/components/slide';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { APP_NAME } from '@/config';
+import { APP_NAME, DATA_FILE } from '@/config';
 import { loadExamSettings, saveExamSettings } from '@/lib/tauri-store';
 import { cn } from '@/lib/utils';
-import { Analytics } from '@vercel/analytics/next';
+import type { IExamFileQuestions, IExamModule } from '@/types/exam.types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +20,7 @@ interface ExamSettings {
 	studentName: string;
 	tasksCount: number;
 	timeTaken: number;
+	selectedModules: number[];
 }
 
 export default function ExamSetting() {
@@ -29,29 +31,65 @@ export default function ExamSetting() {
 	const [nameError, setNameError] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [appName, setAppName] = useState('');
+	const [modules, setModules] = useState<IExamModule[]>([]);
+	const [questions, setQuestions] = useState<IExamFileQuestions[]>([]);
+	const [selectedModules, setSelectedModules] = useState<number[]>([]);
 
-	// Load previous settings when component mounts
+	// Load previous settings and modules when component mounts
 	useEffect(() => {
-		const loadSettings = async () => {
+		const loadData = async () => {
 			try {
+				setIsLoading(true);
+
+				// Загружаем модули и вопросы из файла с тестами
+				const examData = await fetch(DATA_FILE).then(res => res.json());
+				const availableModules = examData.modules || [];
+				const availableQuestions = examData.questions || [];
+
+				setModules(availableModules);
+				setQuestions(availableQuestions);
+
+				// Загружаем сохраненные настройки
 				const savedSettings = await loadExamSettings();
 
 				if (savedSettings) {
 					setStudentName(savedSettings.studentName || '');
 					setTasksCount(savedSettings.tasksCount || 30);
 					setTimeTaken(savedSettings.timeTaken || 40);
+
+					// Если в настройках есть выбранные модули, используем их
+					// Иначе выбираем все доступные модули
+					if (
+						savedSettings.selectedModules &&
+						savedSettings.selectedModules.length > 0
+					) {
+						setSelectedModules(savedSettings.selectedModules);
+					} else {
+						setSelectedModules(
+							availableModules.map((module: IExamModule) => module.id)
+						);
+					}
+				} else {
+					// По умолчанию выбираем все модули
+					setSelectedModules(
+						availableModules.map((module: IExamModule) => module.id)
+					);
 				}
 
 				// Set app name after component mounts to avoid hydration issues
 				setAppName(APP_NAME);
 			} catch (error) {
-				console.error('Error loading exam settings:', error);
+				console.error('Error loading exam settings or modules:', error);
+				// Если не удалось загрузить модули, создаем пустой массив
+				setModules([]);
+				setQuestions([]);
+				setSelectedModules([]);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
-		loadSettings();
+		loadData();
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -62,10 +100,17 @@ export default function ExamSetting() {
 			return;
 		}
 
+		// Проверяем, что выбран хотя бы один модуль
+		if (selectedModules.length === 0) {
+			alert('Пожалуйста, выберите хотя бы один модуль');
+			return;
+		}
+
 		const settings: ExamSettings = {
 			studentName,
 			tasksCount,
 			timeTaken,
+			selectedModules,
 		};
 
 		// Save settings
@@ -90,7 +135,7 @@ export default function ExamSetting() {
 			>
 				Назад
 			</Button>
-			<Button type='submit' className='h-10' onClick={handleSubmit}>
+			<Button type='button' onClick={handleSubmit} className='h-10'>
 				Начать
 			</Button>
 		</AppFooter>
@@ -110,7 +155,7 @@ export default function ExamSetting() {
 					</div>
 				)}
 
-				<form onSubmit={handleSubmit} className='space-y-6 w-full'>
+				<form onSubmit={e => e.preventDefault()} className='space-y-6 w-full'>
 					<div className='flex flex-col space-y-1.5'>
 						<Label className='text-lg' htmlFor='name'>
 							Имя{' '}
@@ -137,6 +182,9 @@ export default function ExamSetting() {
 					<div className='flex flex-col space-y-3 w-full'>
 						<Label className='text-lg' htmlFor='tasksCount'>
 							Количество заданий: {tasksCount}
+							<span className='text-sm text-muted-foreground ml-2'>
+								(динамическую настройку кол-ва вопросов мне делать лень)
+							</span>
 						</Label>
 						<SliderDemo
 							defaultValue={[tasksCount]}
@@ -178,9 +226,20 @@ export default function ExamSetting() {
 							<span>60</span>
 						</div>
 					</div>
+
+					{/* Добавляем селектор модулей */}
+					{modules.length > 0 && (
+						<div className='flex flex-col space-y-3 w-full'>
+							<ModuleSelector
+								modules={modules}
+								questions={questions}
+								selectedModules={selectedModules}
+								onChange={setSelectedModules}
+							/>
+						</div>
+					)}
 				</form>
 			</div>
-			<Analytics />
 		</AppLayout>
 	);
 }

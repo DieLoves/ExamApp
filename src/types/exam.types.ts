@@ -1,6 +1,11 @@
 export interface IExamFile {
-	modules: IExamFileModules[];
+	modules: IExamModule[];
 	questions: IExamFileQuestions[];
+}
+
+export interface IExamModule {
+	id: number;
+	title: string;
 }
 
 export interface IExamFileModules {

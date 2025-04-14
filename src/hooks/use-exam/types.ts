@@ -9,6 +9,7 @@ export interface ExamSettings {
 	studentName: string;
 	tasksCount: number;
 	timeTaken: number;
+	selectedModules: number[]; // Добавляем массив ID выбранных модулей
 }
 
 export interface ExamState {
