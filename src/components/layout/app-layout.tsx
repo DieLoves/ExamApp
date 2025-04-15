@@ -1,5 +1,6 @@
 'use client';
 
+import { Analytics } from '@vercel/analytics/next';
 import type { ReactNode } from 'react';
 import { LoadingSpinner } from '../ui/loading-spinner';
 import { AppHeader } from './app-header';
@@ -35,6 +36,7 @@ export function AppLayout({
 			>
 				{children}
 			</main>
+			<Analytics />
 			{footer}
 		</div>
 	);

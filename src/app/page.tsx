@@ -8,8 +8,6 @@ import { APP_VERSION, checkIsTauriEnvironment } from '@/config';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { Analytics } from '@vercel/analytics/next';
-
 export default function Home() {
 	const router = useRouter();
 	const [appVersion, setAppVersion] = useState('');
@@ -70,7 +68,6 @@ export default function Home() {
 						Телеграм (https://t.me/+kaKZL00L2Pc1NmVi)
 					</ExternalLink>
 				</p>
-				<Analytics />
 			</div>
 		</AppLayout>
 	);
