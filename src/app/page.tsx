@@ -64,10 +64,10 @@ export default function Home() {
 				<p className='text-sm text-muted-foreground mt-4'>
 					Обновления приложения (Версия на IOS):{' '}
 					<ExternalLink
-						href='https://t.me/+Att5GS3hnLsyMjJi'
+						href='https://t.me/+kaKZL00L2Pc1NmVi'
 						className='text-blue-500'
 					>
-						Телеграм
+						Телеграм (https://t.me/+kaKZL00L2Pc1NmVi)
 					</ExternalLink>
 				</p>
 				<Analytics />

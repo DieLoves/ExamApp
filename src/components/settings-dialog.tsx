@@ -22,6 +22,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useSettings } from '@/contexts/settings-context';
+import { alertMessage } from '@/lib/messager';
 import { clearAllData } from '@/lib/tauri-store';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
@@ -40,13 +41,13 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
 		try {
 			await clearAllData();
 			setShowClearDataAlert(false);
-			alert('Все данные успешно удалены');
+			alertMessage('Все данные успешно удалены');
 
 			// Перезагрузка страницы для применения изменений
 			window.location.reload();
 		} catch (error) {
 			console.error('Ошибка при очистке данных:', error);
-			alert('Произошла ошибка при удалении данных');
+			alertMessage('Произошла ошибка при удалении данных', 'error');
 		}
 	};
 

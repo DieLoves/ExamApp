@@ -14,6 +14,7 @@ type FontSize = 'small' | 'medium' | 'large';
 interface SettingsContextType {
 	fontSize: FontSize;
 	setFontSize: (size: FontSize) => void;
+	// setKeepScreenOn: (enabled: boolean) => void;
 	loadTauriSettings: () => Promise<void>;
 }
 
@@ -56,6 +57,7 @@ const applyFontSize = (size: FontSize) => {
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
 	const [fontSize, setFontSize] = useState<FontSize>('medium');
 	const [initialized, setInitialized] = useState(false);
+	// const [keepScreenOn, setKeepScreenOn] = useState(true);
 
 	// Load settings from Tauri Store or localStorage
 	// Изменим функцию loadTauriSettings, чтобы она применяла размер шрифта сразу
@@ -75,8 +77,22 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				await saveAppSettings({
 					fontSize: defaultSize,
 					theme: null,
+					// isKeepScreenOn: keepScreenOn,
 				});
 			}
+
+			// if (settings?.isKeepScreenOn) {
+			// 	setKeepScreenOn(settings.isKeepScreenOn);
+			// 	applyScreenKeepOn(settings.isKeepScreenOn);
+			// } else {
+			// 	setKeepScreenOn(true);
+			// 	applyScreenKeepOn(true);
+			// 	await saveAppSettings({
+			// 		fontSize,
+			// 		theme: null,
+			// 		isKeepScreenOn: keepScreenOn,
+			// 	});
+			// }
 		} catch (error) {
 			console.error('Error loading settings:', error);
 			// Fallback to localStorage
@@ -111,6 +127,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
 		// Save to localStorage as fallback
 		localStorage.setItem('appFontSize', fontSize);
+		// localStorage.setItem('keepScreenOn', `${keepScreenOn}`);
 
 		// Apply font size
 		applyFontSize(fontSize);

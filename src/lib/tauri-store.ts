@@ -6,6 +6,7 @@
 export interface AppSettings {
 	fontSize: 'small' | 'medium' | 'large';
 	theme: string | null;
+	// isKeepScreenOn: boolean;
 }
 
 export interface ExamSettings {

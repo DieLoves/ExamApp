@@ -170,11 +170,11 @@ export function ModuleSelector({
 								<div className='mr-3'>
 									{isSelected ? (
 										<div className='h-6 w-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground'>
-											{module.id}
+											{module.id + 1}
 										</div>
 									) : (
 										<div className='h-6 w-6 rounded-full border-2 border-muted-foreground flex items-center justify-center'>
-											{module.id}
+											{module.id + 1}
 										</div>
 									)}
 								</div>

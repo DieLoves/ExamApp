@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { APP_NAME, DATA_FILE } from '@/config';
+import { alertMessage } from '@/lib/messager';
 import { loadExamSettings, saveExamSettings } from '@/lib/tauri-store';
 import { cn } from '@/lib/utils';
 import type { IExamFileQuestions, IExamModule } from '@/types/exam.types';
@@ -102,7 +103,7 @@ export default function ExamSetting() {
 
 		// Проверяем, что выбран хотя бы один модуль
 		if (selectedModules.length === 0) {
-			alert('Пожалуйста, выберите хотя бы один модуль');
+			alertMessage('Пожалуйста, выберите хотя бы один модуль', 'warning');
 			return;
 		}
 
@@ -135,7 +136,12 @@ export default function ExamSetting() {
 			>
 				Назад
 			</Button>
-			<Button type='button' onClick={handleSubmit} className='h-10'>
+			<Button
+				type='button'
+				disabled={selectedModules.length == 0}
+				onClick={handleSubmit}
+				className='h-10'
+			>
 				Начать
 			</Button>
 		</AppFooter>
@@ -183,7 +189,7 @@ export default function ExamSetting() {
 						<Label className='text-lg' htmlFor='tasksCount'>
 							Количество заданий: {tasksCount}
 							<span className='text-sm text-muted-foreground ml-2'>
-								(динамическую настройку кол-ва вопросов мне делать лень)
+								(мне лень делать этот слайдер динамическим)
 							</span>
 						</Label>
 						<SliderDemo
