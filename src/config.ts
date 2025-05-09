@@ -7,7 +7,6 @@ import { isTauri } from "./lib/tauri-store"
 export interface Discipline {
   id: string
   name: string
-  file: string
 	isAvaliable: boolean
 }
 
@@ -42,24 +41,20 @@ export const APP_VERSION = getAppVersion()
 
 // Определяем доступные дисциплины с учетом версии
 export function getDisciplines(): Discipline[] {
-	console.log(APP_VERSION)
   return [
     {
       id: "russian-tech",
       name: "Русский язык (тех)",
-      file: "/tech.json",
 			isAvaliable: APP_VERSION === "tech"
     },
     {
       id: "russian-human",
       name: "Русский язык (гум)",
-      file: "/human.json",
 			isAvaliable: APP_VERSION === "human"
     },
     {
       id: "literature",
       name: "Литература",
-      file: "/literature.json",
 			isAvaliable: true
     },
   ]

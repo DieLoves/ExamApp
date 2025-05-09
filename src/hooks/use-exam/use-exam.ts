@@ -65,10 +65,10 @@ export function useExam() {
 
       // Определяем файл с тестами на основе выбранной дисциплины
       const discipline = DISCIPLINES.find((d) => d.id === savedSettings.disciplineId) || DISCIPLINES[0]
-      const dataFile = discipline.file
+      const dataFile = discipline.id
 
       // Загружаем вопросы из выбранного файла
-      const questionsData = await fetch(dataFile).then((res) => res.json())
+      const { default: questionsData } = await import(`@/exams/${dataFile}.ts`)
 
       // Фильтруем вопросы по выбранным модулям
       let filteredQuestions = questionsData.questions

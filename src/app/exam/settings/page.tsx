@@ -105,8 +105,11 @@ export default function ExamSetting() {
   useEffect(() => {
     if (tasksCount > maxTasksCount) {
       setTasksCount(maxTasksCount)
+    } else if (maxTasksCount >= 30 && tasksCount !== 30) {
+      // Если возможно, выставляем 30 вопросов
+      setTasksCount(30)
     } else {
-      // Округляем tasksCount до ближайшего значения, кратного шагу
+      // Округляем до ближайшего значения, кратного шагу
       const roundedValue = Math.round(tasksCount / sliderStep) * sliderStep
       if (roundedValue !== tasksCount) {
         setTasksCount(roundedValue)
@@ -156,8 +159,8 @@ export default function ExamSetting() {
       const discipline = DISCIPLINES.find((d) => d.id === disciplineId) || DISCIPLINES[0]
 
       // Загружаем модули и вопросы из файла дисциплины
-      console.log(`Loading data for discipline: ${disciplineId} from ${discipline.file}`)
-      const examData = await fetch(discipline.file).then((res) => res.json())
+      // console.log(`Loading data for discipline: ${disciplineId} from ${discipline.file}`)
+      const { default: examData } = await import(`@/exams/${discipline.id}.ts`)
       const availableModules = examData.modules || []
       const availableQuestions = examData.questions || []
 
