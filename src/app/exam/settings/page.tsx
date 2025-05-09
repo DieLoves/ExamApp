@@ -105,12 +105,13 @@ export default function ExamSetting() {
   useEffect(() => {
     if (tasksCount > maxTasksCount) {
       setTasksCount(maxTasksCount)
-    } else if (maxTasksCount >= 30 && tasksCount !== 30) {
-      // Если возможно, выставляем 30 вопросов
+    } else if (tasksCount < 30 && maxTasksCount >= 30) {
+      // Устанавливаем 30, если это возможно
       setTasksCount(30)
     } else {
-      // Округляем до ближайшего значения, кратного шагу
+      // Округляем tasksCount до ближайшего значения, кратного шагу
       const roundedValue = Math.round(tasksCount / sliderStep) * sliderStep
+      
       if (roundedValue !== tasksCount) {
         setTasksCount(roundedValue)
       }
