@@ -1,13 +1,12 @@
 'use client';
 
-import type React from 'react';
+import type React from 'react'
 
 import {
-	isMobileDevice,
 	loadAppSettings,
 	saveAppSettings,
-} from '@/lib/tauri-store';
-import { createContext, useContext, useEffect, useState } from 'react';
+} from '@/lib/tauri-store'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 type FontSize = 'small' | 'medium' | 'large';
 
@@ -70,8 +69,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				applyFontSize(settings.fontSize);
 			} else {
 				// Set default based on device using Tauri API
-				const isMobile = await isMobileDevice();
-				const defaultSize = isMobile ? 'small' : 'medium';
+				const defaultSize = 'small';
 				setFontSize(defaultSize);
 				applyFontSize(defaultSize);
 				await saveAppSettings({
@@ -104,8 +102,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				applyFontSize(savedFontSize);
 			} else {
 				// Use fallback device detection
-				const isMobile = window.innerWidth < 768;
-				const defaultSize = isMobile ? 'small' : 'medium';
+				const defaultSize = 'small';
 				setFontSize(defaultSize);
 				applyFontSize(defaultSize);
 				localStorage.setItem('appFontSize', defaultSize);
